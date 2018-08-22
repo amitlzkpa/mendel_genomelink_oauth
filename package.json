@@ -3,13 +3,15 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "dotenv": "^6.0.0",
     "ejs": "latest",
     "express": "latest",
     "express-session": "^1.15.6",
     "genomelink-node": "latest",
+    "nodemon": "^1.18.3",
     "request": "latest"
   },
   "scripts": {
-    "start": "node app.js"
+    "start": "nodemon app.js"
   }
 }

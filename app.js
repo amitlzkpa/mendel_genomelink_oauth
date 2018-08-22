@@ -1,13 +1,14 @@
 const express = require('express');
 const session = require('express-session');
 const genomeLink = require('genomelink-node');
+require('dotenv').config();
 
 const app = express();
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
 app.use(session({
-  secret: 'YOURSECRET',
+  secret: process.env.GENOMELINK_CLIENT_SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -16,7 +17,7 @@ app.use(session({
 }));
 
 app.get('/', async (req, res) => {
-  const scope = 'report:eye-color report:beard-thickness report:morning-person';
+  const scope = 'report:bmi report:body-fat-mass report:body-fat-percentage report:caffeine-consumption report:excessive-daytime-sleepiness report:height report:job-related-exhaustion report:muscular-strength report:weight';
   const authorizeUrl = genomeLink.OAuth.authorizeUrl({ scope: scope });
 
   // Fetching a protected resource using an OAuth2 token if exists.
@@ -32,10 +33,25 @@ app.get('/', async (req, res) => {
     }));
   }
 
-  res.render('index', {
-    authorize_url: authorizeUrl,
-    reports: reports,
-  });
+  if(reports.length > 0) {
+    let ret = {};
+    for(let i=0; i<reports.length; i++) {
+      let rep = reports[i];
+      if(typeof rep["_data"]["phenotype"] !== 'undefined') {
+        ret[rep["_data"]["phenotype"]["url_name"]] = rep["_data"];
+      }
+    }
+    console.log(req.session.oauthToken);
+    console.log(ret);
+    res.send(ret);
+  }
+  else {
+    res.render('index', {
+      authorize_url: authorizeUrl,
+      reports: reports,
+    });
+  }
+
 });
 
 app.get('/callback', async (req, res) => {
