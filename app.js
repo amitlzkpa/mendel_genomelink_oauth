@@ -17,8 +17,6 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
-console.log(process.env.GENOMELINK_CLIENT_SECRET);
-
 app.use(session({
   secret: process.env.GENOMELINK_CLIENT_SECRET,
   resave: false,
