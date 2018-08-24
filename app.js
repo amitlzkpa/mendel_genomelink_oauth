@@ -3,11 +3,21 @@ const session = require('express-session');
 const genomeLink = require('genomelink-node');
 const request = require('request');
 const sha1 = require('sha1');
-require('dotenv').config();
+let dotenv;
+
+try {
+  dotenv = require('dotenv');
+  dotenv.config();
+}
+catch(err) {
+  console.log(err);
+}
 
 const app = express();
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
+
+console.log(process.env.GENOMELINK_CLIENT_SECRET);
 
 app.use(session({
   secret: process.env.GENOMELINK_CLIENT_SECRET,
