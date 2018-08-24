@@ -1,19 +1,32 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title>Submit your data for Mendel Chair</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   </head>
   <body>
     <div class="container">
       <div class="page-header">
-        <p class="lead">GENOME LINK example</p>
+        <p class="lead">Submit your data for Mendel Chair</p>
       </div>
 
       <% if (authorize_url) { %>
-      <a href="<%= authorize_url %>" class="btn btn-default">Connect with genome</a>
+      <a href="<%= authorize_url %>" class="btn btn-default">Connect with genome</a><br>
       <% } %>
+      Click the button above to submit your genetic data for designing a customized chair.<br>
+      On successfully submitting you will get a token which you can use on the demo to customize the design.<br>
+      It might take some time to update. Please be patient.<br>
+      <br>
+      This is only for a demo. Submitted data is publicly accessible however your identity is not stored.<br>
+      Feel free to play around.
 
-      <%= reports %>
+      <hr>
+
+
+      <h3><a href="https://o-lap.org/app.html?a=amitlzkpa&r=mendel">DEMO</a></h3><br>
+      Try it out
+
+
 
     </div>
   </body>
