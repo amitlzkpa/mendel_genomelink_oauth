@@ -1,6 +1,8 @@
 const express = require('express');
 const session = require('express-session');
 const genomeLink = require('genomelink-node');
+const request = require('request');
+const sha1 = require('sha1');
 require('dotenv').config();
 
 const app = express();
@@ -34,16 +36,38 @@ app.get('/', async (req, res) => {
   }
 
   if(reports.length > 0) {
-    let ret = {};
+    let reportData = {};
     for(let i=0; i<reports.length; i++) {
       let rep = reports[i];
       if(typeof rep["_data"]["phenotype"] !== 'undefined') {
-        ret[rep["_data"]["phenotype"]["url_name"]] = rep["_data"];
+        reportData[rep["_data"]["phenotype"]["url_name"]] = rep["_data"];
       }
     }
-    console.log(req.session.oauthToken);
-    console.log(ret);
-    res.send(ret);
+
+    let reportToken = sha1(req.session.oauthToken).substring(0, 6);
+    console.log(`Token------------> ${reportToken}`);
+    // console.log(reportData);
+    let postData = {
+      method: 'POST',
+      url: 'https://genomedb.herokuapp.com/reports',
+      body: {"token": reportToken, "report": reportData},
+      json: true,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    request.post(postData, (err, resp, body) => {
+      if (err) {
+        console.log(err);
+        res.send('Error');
+        return;
+      }
+      res.send(`Token: ${reportToken}`);
+    });
+
+
+
   }
   else {
     res.render('index', {
