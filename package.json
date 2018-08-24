@@ -9,7 +9,8 @@
     "express-session": "^1.15.6",
     "genomelink-node": "latest",
     "nodemon": "^1.18.3",
-    "request": "latest"
+    "request": "^2.88.0",
+    "sha1": "^1.1.1"
   },
   "scripts": {
     "start": "nodemon app.js"
